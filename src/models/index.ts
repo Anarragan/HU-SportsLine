@@ -1,20 +1,17 @@
 import type { Sequelize } from "sequelize";
-import { customers as _customers } from "./customers";
-import type { customersAttributes, customersCreationAttributes } from "./customers";
-import { orders as _orders } from "./orders";
-import type { ordersAttributes, ordersCreationAttributes } from "./orders";
-import { products as _products } from "./products";
-import type { productsAttributes, productsCreationAttributes } from "./products";
-import { users as _users } from "./users";
-import type { usersAttributes, usersCreationAttributes } from "./users";
-import { users as _users } from "./users";
-import type { usersAttributes, usersCreationAttributes } from "./users";
+import { customers as _customers } from "./customers.js";
+import type { customersAttributes, customersCreationAttributes } from "./customers.js";
+import { orders as _orders } from "./orders.js";
+import type { ordersAttributes, ordersCreationAttributes } from "./orders.js";
+import { products as _products } from "./products.js";
+import type { productsAttributes, productsCreationAttributes } from "./products.js";
+import { users as _users } from "./users.js";
+import type { usersAttributes, usersCreationAttributes } from "./users.js";
 
 export {
   _customers as customers,
   _orders as orders,
   _products as products,
-  _users as users,
   _users as users,
 };
 
@@ -27,15 +24,12 @@ export type {
   productsCreationAttributes,
   usersAttributes,
   usersCreationAttributes,
-  usersAttributes,
-  usersCreationAttributes,
 };
 
 export function initModels(sequelize: Sequelize) {
   const customers = _customers.initModel(sequelize);
   const orders = _orders.initModel(sequelize);
   const products = _products.initModel(sequelize);
-  const users = _users.initModel(sequelize);
   const users = _users.initModel(sequelize);
 
   orders.belongsTo(customers, { as: "customer", foreignKey: "customer_id"});
@@ -49,7 +43,6 @@ export function initModels(sequelize: Sequelize) {
     customers: customers,
     orders: orders,
     products: products,
-    users: users,
     users: users,
   };
 }
