@@ -7,7 +7,7 @@ dotenv.config();
 export async function startServer() {
     try {
         const app = createApp();
-        const PORT = 3002;
+        const PORT = process.env.PORT || 3000;
 
         await connectDB();
         app.listen(PORT, () => {
