@@ -2,3 +2,6 @@
 /dist
 /.env
 /.env.test
+
+/src/config/keys/private.pem
+/src/config/keys/public.pem
