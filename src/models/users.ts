@@ -83,6 +83,7 @@ export class users extends Model<usersAttributes, usersCreationAttributes> imple
     tableName: 'users',
     schema: 'public',
     timestamps: true,
+    underscored: true,
     indexes: [
       {
         name: "users_email_key",

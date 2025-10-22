@@ -59,8 +59,9 @@ Con Docker (compose):
 - Docker Compose (dev/test): [docker-compose.yml](docker-compose.yml) (.env usado: [.env.test](.env.test))  
 - PM2 config: [ecosystem.config.cjs](ecosystem.config.cjs)
 
+## autenticacion y autorizacion por roles con jwt done
+
 ## Próximos pasos sugeridos
-- Añadir autenticación y autorización (JWT, roles).
 - Implementar controladores y DTO/DAOs completos.
 - Tests automatizados para endpoints críticos.
 - Pipeline CI/CD para build y despliegue.
