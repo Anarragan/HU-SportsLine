@@ -8,10 +8,8 @@ services:
     ports:
       - "3002:3002"
     env_file:
-      - .env
+      - .env.test
     environment:
-      NODE_ENV: production
-      PORT: 3002
       DB_HOST: db
       DB_PORT: 5432
       DB_USER: ${DB_USER}
@@ -25,11 +23,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.5"       # Limita el uso máximo a medio núcleo
-          memory: 512M      # Limita la memoria RAM a 512 MB
+          cpus: "0.5"
+          memory: 512M
         reservations:
-          cpus: "0.25"      # Reserva 1/4 de CPU
-          memory: 256M      # Reserva 256 MB
+          cpus: "0.25"
+          memory: 256M
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3002 || exit 1"]
       interval: 30s
@@ -41,7 +39,7 @@ services:
     container_name: sportsline-db
     restart: always
     env_file:
-      - .env
+      - .env.test
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -49,14 +47,14 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"   # Puedes comentar esto si no necesitas acceso externo
+      - "5432:5432"
     networks:
       - backend_net
     deploy:
       resources:
         limits:
-          cpus: "1.0"     # 1 núcleo máximo
-          memory: 1G      # 1 GB de RAM máximo
+          cpus: "1.0"
+          memory: 1G
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} || exit 1"]
       interval: 10s

@@ -1,0 +1,34 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sportsline-app
+    restart: always
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      PORT: 3002
+    command: ["pm2-runtime", "ecosystem.config.cjs"]
+    networks:
+      - backend_net
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3002 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  backend_net:
+    driver: bridge
