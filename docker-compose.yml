@@ -1,0 +1,69 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sportsline-app
+    restart: always
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env.test
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    depends_on:
+      - db
+    command: ["pm2-runtime", "ecosystem.config.cjs"]
+    networks:
+      - backend_net
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3002 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  db:
+    image: postgres:15-alpine
+    container_name: sportsline-db
+    restart: always
+    env_file:
+      - .env.test
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - backend_net
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:
+
+networks:
+  backend_net:
+    driver: bridge
