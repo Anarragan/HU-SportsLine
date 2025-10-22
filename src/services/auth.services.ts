@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import { CryptoService } from './crypto.service.js';
 import { users } from '../models/users.js';
 import type { IRegisterDTO, ILoginDTO } from '../interfaces/auth.DTO.js';
 import { generateToken, generateRefreshToken } from "../config/jwt.config.js";
@@ -22,9 +23,11 @@ export const registerUserService = async (userData: IRegisterDTO) => {
 
     const payload = { id: String(newUser.id), email: newUser.email, role: newUser.role };
     const token = generateToken(payload, '15m');
+    if (!token) throw new Error("Failed to generate token");
+    const secureToken = CryptoService.encryptMessage(token);
     const refreshToken = generateRefreshToken(payload, '7d');
 
-    return { user: newUser, token, refreshToken };
+    return { user: newUser, token: secureToken, refreshToken };
 }
 
 export const loginUserService = async (userData: ILoginDTO) => {
@@ -36,6 +39,8 @@ export const loginUserService = async (userData: ILoginDTO) => {
 
     const payload = { id: String(user.id), email: user.email, role: user.role };
     const token = generateToken(payload, '15m');
+    if (!token) throw new Error("Failed to generate token");
+    const secureToken = CryptoService.encryptMessage(token);
     const refreshToken = generateRefreshToken(payload, '7d');
-    return { user, token, refreshToken };
+    return { user, token: secureToken, refreshToken };
 }
