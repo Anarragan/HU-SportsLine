@@ -1,5 +1,5 @@
 export interface IRegisterDTO {
-    name?: string;
+    name: string;
     email: string;
     password: string;
     created_at?: Date;
