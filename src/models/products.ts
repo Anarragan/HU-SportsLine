@@ -78,6 +78,7 @@ export class products extends Model<productsAttributes, productsCreationAttribut
     tableName: 'products',
     schema: 'public',
     timestamps: true,
+    underscored: true,
     indexes: [
       {
         name: "products_code_key",
