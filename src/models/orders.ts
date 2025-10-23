@@ -77,6 +77,7 @@ export class orders extends Model<ordersAttributes, ordersCreationAttributes> im
     tableName: 'orders',
     schema: 'public',
     timestamps: true,
+    underscored: true,
     indexes: [
       {
         name: "orders_pkey",

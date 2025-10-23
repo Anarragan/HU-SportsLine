@@ -68,6 +68,9 @@ export class customers extends Model<customersAttributes, customersCreationAttri
     tableName: 'customers',
     schema: 'public',
     timestamps: true,
+    underscored: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
     indexes: [
       {
         name: "customers_pkey",
