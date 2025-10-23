@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt';
-import { CryptoService } from './crypto.service.js';
 import { users } from '../models/users.js';
-import type { IRegisterDTO, ILoginDTO } from '../interfaces/auth.DTO.js';
+import { registerSchema , loginSchema, type RegisterDTO, type LoginDTO } from '../schema/auth.schema.js';
 import { generateToken, generateRefreshToken } from "../config/jwt.config.js";
 
-export const registerUserService = async (userData: IRegisterDTO) => {
-    if (!userData.email) throw new Error("Email is required");
-    if (!userData.name) throw new Error("Name is required");
-    if (!userData.password) throw new Error("Password is required");
+export const registerUserService = async (userData: RegisterDTO) => {
+    const validation = registerSchema.safeParse(userData);
+    if (!validation.success) {
+        throw new Error("Invalid user data");
+    }
 
     const existingUser = await users.findOne({ where: { email: userData.email } });
     if (existingUser) throw new Error("Email already in use");
@@ -18,19 +18,23 @@ export const registerUserService = async (userData: IRegisterDTO) => {
         name: userData.name,
         email: userData.email,
         password: password_hash,
-        role: userData.role
+        role: (userData as any).role ?? 'user'
     });
 
     const payload = { id: String(newUser.id), email: newUser.email, role: newUser.role };
     const token = generateToken(payload, '15m');
     if (!token) throw new Error("Failed to generate token");
-    const secureToken = CryptoService.encryptMessage(token);
     const refreshToken = generateRefreshToken(payload, '7d');
 
-    return { user: newUser, token: secureToken, refreshToken };
+    return { user: newUser, token, refreshToken };
 }
 
-export const loginUserService = async (userData: ILoginDTO) => {
+export const loginUserService = async (userData: LoginDTO) => {
+    const validation = loginSchema.safeParse(userData);
+    if (!validation.success) {
+        throw new Error("Invalid user data");
+    }
+
     const user = await users.findOne({ where: { email: userData.email } });
     if (!user) throw new Error("users not found");
 
@@ -40,7 +44,6 @@ export const loginUserService = async (userData: ILoginDTO) => {
     const payload = { id: String(user.id), email: user.email, role: user.role };
     const token = generateToken(payload, '15m');
     if (!token) throw new Error("Failed to generate token");
-    const secureToken = CryptoService.encryptMessage(token);
     const refreshToken = generateRefreshToken(payload, '7d');
-    return { user, token: secureToken, refreshToken };
+    return { user, token, refreshToken };
 }
