@@ -496,7 +496,6 @@ Para no tener que copiar el token en cada petición:
 |-----|----------|
 | **admin** | Acceso total: crear/editar/eliminar productos, clientes y órdenes |
 | **seller** | Crear clientes, crear órdenes, ver productos |
-| **customer** | Ver productos, crear órdenes propias |
 
 ## 🐛 Solución de Problemas
 
@@ -523,7 +522,7 @@ npm test             # Ejecutar tests (si están configurados)
 
 ## 👥 Autores
 
-- **María Victoria** - [Anarragan](https://github.com/Anarragan)
+- **Anarragan** - [GitHub](https://github.com/Anarragan)
 
 ## 📄 Licencia
 
