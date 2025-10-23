@@ -33,7 +33,6 @@ export const loginController = async (req: Request, res: Response) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
-        // También devolvemos el refreshToken explícitamente
         res.status(200).json({ user, token, refreshToken });
     } catch (error: any) {
         res.status(400).json({
@@ -54,7 +53,6 @@ export const refreshTokenController = (req: Request, res: Response) => {
         return res.status(403).json({ error: "Invalid refresh token" });
     }
 
-    // Eliminar campos innecesarios del payload
     const { exp, iat, ...cleanPayload } = payload as any;
 
     const newToken = generateToken(cleanPayload, '15m');

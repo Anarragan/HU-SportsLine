@@ -1,4 +1,3 @@
-// controllers/order.controller.ts
 import type { Request, Response } from "express";
 import { createOrderService, getOrdersService } from "../services/order.service.js";
 import { createOrderSchema } from "../schema/order.schema.js";
