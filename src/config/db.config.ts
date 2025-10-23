@@ -10,7 +10,6 @@ export const supabase = createClient(
     process.env.SUPABASE_ANON_KEY!,
 );
 
-// create a Sequelize instance (replace DATABASE_URL or env parts as needed)
 export const sequelize = new Sequelize(
     process.env.DB_NAME!,
     process.env.DB_USER!,
